@@ -1,6 +1,6 @@
 import random
 import os
-os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
+# os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import pygame as pg 
 import pygame_menu
 import sys 
@@ -156,7 +156,7 @@ class TicTacToe():
     def make_move(self, pos):
         ''' This function assigns the value at a particular position on the board and 
         displays the appropriate icon at the required position on the game screen '''
-
+        print("Trying")
         posx, posy = POSITIONS[pos]
         self.board[pos] = self.player 
     
@@ -274,16 +274,16 @@ class Agent():
         end = False
         while not end:
             for event in pg.event.get():
-                if event.type == QUIT:
+                if event.type == pg.QUIT:
                     pg.quit()
                     sys.exit()
+                elif event.type == pg.MOUSEBUTTONDOWN:
+                    game.user_click()
+                    game.game_status()
                 elif game.player == agent_player:
                     time.sleep(0.5)
                     move = self.play_select_move(game)
                     game.make_move(self.find_pos(game, move))
-                    game.game_status()
-                elif event.type is MOUSEBUTTONDOWN:
-                    game.user_click()
                     game.game_status()
                 if game.winner or game.draw:
                     time.sleep(1.5)
@@ -423,11 +423,10 @@ if len(sys.argv) == 2 and sys.argv[-1] == '-t':
 agent.epsilon = 0.0
 mytheme = pygame_menu.themes.Theme(title_bar_style = pygame_menu.widgets.MENUBAR_STYLE_UNDERLINE_TITLE, title_background_color = (4, 47, 126), title_font = pygame_menu.font.FONT_OPEN_SANS_ITALIC, background_color = (0, 60, 255, 100) )
 
-menu = pygame_menu.Menu(height + 99, width - 1, 'Tic Tac Toe',  theme = mytheme)
+menu = pygame_menu.Menu('Tic Tac Toe',height, width)
 
 while True:
-    menu.add_label("Choose Icon", font_color = white, font_size = 40)
-    menu.add_button(CROSS, play_CROSS, font_size = 60, font_color = white, shadow = True)
-    menu.add_button(NOUGHT, play_NOUGHT, font_size = 60, font_color = white, shadow = True)
+    menu.add.label("Choose Icon", font_color = white, font_size = 40)
+    menu.add.button(CROSS, play_CROSS)
+    menu.add.button(NOUGHT, play_NOUGHT)
     menu.mainloop(screen)
-
